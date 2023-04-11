@@ -57,32 +57,36 @@ def plot1(df):
     axs = axs.flatten()
     for i, ax in enumerate(axs):
         df2 = df[df['Year'] == i + 2017]
-        sns.lineplot(data=df2, x='Hour', y='Sulphur dioxide', hue='Weekday', ax=ax)
-        ax.set_ylabel(f'Sulphur Dioxide Concentration (ug/m^3)')
-        ax.set_title(f'{i + 2017}')
+        sns.lineplot(data=df2, x='Hour', y='Nitrogen oxides as nitrogen dioxide', hue='Weekday', ax=ax)
+        ax.set_ylabel(fr'Nitrogen Oxides Concentration ($\mu$g/m$^3$)')
+        ax.text(2, 120, f'{i + 2017}')
+        ax.set_xlim(1, 24)
         if i != 2:
             ax.get_legend().remove()
+        else:
+            handles, label = ax.get_legend_handles_labels()
+            ax.legend(handles, ['Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays'])
 
-    fig.suptitle('Hourly concentrations of Sulphur dioxide sorted by year', y=0.99)
+    #fig.suptitle('Hourly concentrations of Sulphur dioxide sorted by year', y=0.99)
     fig.tight_layout()
     plt.savefig('Figure 1.png', dpi=300)
 
 
 def plot2(df):
-    fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(20, 10), sharex='all')
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(12, 10), sharex='all')
     axs = axs.flatten()
     values = ['PM10 particulate matter (Hourly measured)', 'PM2.5 particulate matter (Hourly measured)',
-              'Ozone', 'Nitrogen oxides as nitrogen dioxide', 'Nitrogen dioxide', 'Sulphur dioxide']
-    names = ['PM10', 'PM2.5', 'Ozone', 'NOx', 'NO2', 'Sulfur Dioxide']
+              'Ozone', 'Nitrogen oxides as nitrogen dioxide']
+    names = ['PM10', 'PM2.5', 'Ozone', 'NOx']
     for i, ax in enumerate(axs):
         df_temp = df
         sns.boxplot(data=df_temp, x='Year', y=values[i], ax=ax, showfliers=False, color='#52acc8')
-        ax.set_ylabel(f'{names[i]} Concentration (ug/m^3)')
+        ax.set_ylabel(fr'{names[i]} Concentration ($\mu$g/m$^3$)')
         ax.locator_params(axis='x', nbins=17)
         ax.tick_params(axis='x', rotation=45)
         ax.xaxis.set_tick_params(labelbottom=True)
     fig.tight_layout(pad=2)
-    fig.suptitle('Box plots of the concentrations of atmospheric pollutants by year', y=0.99)
+    #fig.suptitle('Box plots of the concentrations of atmospheric pollutants by year', y=0.99)
     plt.savefig('Figure 2.png', dpi=300)
 
 
@@ -117,7 +121,7 @@ def plot4(df):
 
         ax.set_xlim(0, 28)
         plt.xticks([0, 7, 14, 21, 28])
-        ax.set_ylabel(f'{k[i]} conc. (ug/m^3)')
+        ax.set_ylabel(fr'{k[i]} conc. ($\mu$g/m$^3$)')
         if i == 0:
             ax.legend()
         if i == 2:
