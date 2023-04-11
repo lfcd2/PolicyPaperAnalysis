@@ -107,7 +107,8 @@ def run_main():
                 wk_2020.append(f'{i+1}-04-2020')
 
         val1 = df_2019.loc[df_2019['Date'].isin(wk_2019)]['Nitrogen oxides as nitrogen dioxide'].mean()
-        val2 = df_2020.loc[df_2020['Date'].isin(wk_2020)]['Nitrogen oxides as nitrogen dioxide'].mean()
+        YearlyDecrease = 5.
+        val2 = df_2020.loc[df_2020['Date'].isin(wk_2020)]['Nitrogen oxides as nitrogen dioxide'].mean()#+YearlyDecrease
         print(station.ID, val1, val2, station.stat_type)
 
         if station.ID == 'HORS':

@@ -60,7 +60,7 @@ def plot1(df):
         sns.lineplot(data=df2, x='Hour', y='Nitrogen oxides as nitrogen dioxide', hue='Weekday', ax=ax)
         ax.set_ylabel(fr'Nitrogen Oxides Concentration ($\mu$g/m$^3$)')
         ax.text(2, 120, f'{i + 2017}')
-        ax.set_xlim(1, 24)
+        ax.set_xlim(1, 23)
         if i != 2:
             ax.get_legend().remove()
         else:

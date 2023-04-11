@@ -17,7 +17,7 @@ def delete_status_and_unit_cols(df):
 
 def get_data():
     df_list = []
-    for year in range(1992, 2023):
+    for year in range(1992, 2024):
         if exists(f'{year}.csv'):
             df = pd.read_csv(f'{year}.csv', header=0)
             print(f'Data for {year} retrieved from cache')
