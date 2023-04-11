@@ -1,0 +1,14 @@
+rownames,site_id,site_name,location_type,latitude,longitude,parameter,Parameter_name,start_date,end_date,ratified_to,zone,agglomeration,local_authority
+527,CA1,Camden Kerbside,Urban Traffic,51.54421,-0.175269,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-05-16,ongoing,2022-12-31,Greater London,Greater London Urban Area,Camden
+1113,HG1,Haringey Roadside,Urban Traffic,51.5993,-0.068218,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-05-16,ongoing,2022-12-31,Greater London,Greater London Urban Area,Haringey
+1464,BEX,London Bexley,Suburban Background,51.46603,0.184806,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1994-05-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Bexley
+1477,CLL2,London Bloomsbury,Urban Background,51.52229,-0.125889,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1992-01-23,ongoing,2022-12-31,Greater London,Greater London Urban Area,Camden
+1528,LON6,London Eltham,Suburban Background,51.45258,0.070766,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-04-01,ongoing,2022-09-30,Greater London,Greater London Urban Area,Greenwich
+1584,HG4,London Haringey Priory Park South,Urban Background,51.584128,-0.125254,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2012-10-26,ongoing,2022-12-31,Greater London,Greater London Urban Area,Haringey
+1591,HRL,London Harlington,Urban Industrial,51.48879,-0.441614,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2004-01-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Hillingdon
+1617,HIL,London Hillingdon,Urban Background,51.49633,-0.460861,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-08-02,ongoing,2022-12-31,Greater London,Greater London Urban Area,Hillingdon
+1642,MY1,London Marylebone Road,Urban Traffic,51.52253,-0.154611,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1997-07-17,ongoing,2022-12-31,Greater London,Greater London Urban Area,Westminster
+1690,KC1,London N. Kensington,Urban Background,51.52105,-0.213492,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-04-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Kensington and Chelsea
+1763,HORS,London Westminster,Urban Background,51.49467,-0.131931,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2001-07-17,ongoing,2022-12-31,Greater London,Greater London Urban Area,Westminster
+2393,SK5,Southwark A2 Old Kent Road,Urban Traffic,51.480499,-0.05955,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2011-01-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Southwark
+2602,TH2,Tower Hamlets Roadside,Urban Traffic,51.52253,-0.042155,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-04-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Tower Hamlets
