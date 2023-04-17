@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-
+import scipy as sp
 
 def get_data():
     df = pd.read_csv('AllData.csv', header=0)
@@ -19,6 +19,10 @@ def add_extra_info(df):
     df['Date'] = df.DateTime.dt.date
     df['Month'] = df.DateTime.dt.month
     df['Day'] = df.DateTime.dt.day
+    df['Weekend'] = False
+    df.loc[df['Weekday'] == 6, 'Weekend'] = True
+    df.loc[df['Weekday'] == 7, 'Weekend'] = True
+    print(df)
     return df
 
 
@@ -53,19 +57,20 @@ def days_after_first_monday(df):
 
 
 def plot1(df):
-    fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(12, 8), sharex='all', sharey='all')
+    fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(12, 6), sharex='all', sharey='all')
     axs = axs.flatten()
     for i, ax in enumerate(axs):
         df2 = df[df['Year'] == i + 2017]
-        sns.lineplot(data=df2, x='Hour', y='Nitrogen oxides as nitrogen dioxide', hue='Weekday', ax=ax)
+        sns.lineplot(data=df2.loc[~df['Weekend']], x='Hour', y='Nitrogen oxides as nitrogen dioxide',
+                     ax=ax, label='Weekdays')
+        sns.lineplot(data=df2.loc[df['Weekend']], x='Hour', y='Nitrogen oxides as nitrogen dioxide',
+                     ax=ax, label='Weekends')
         ax.set_ylabel(fr'Nitrogen Oxides Concentration ($\mu$g/m$^3$)')
-        ax.text(2, 120, f'{i + 2017}')
+        ax.text(2, 95, f'{i + 2017}')
         ax.set_xlim(1, 23)
+        ax.legend()
         if i != 2:
             ax.get_legend().remove()
-        else:
-            handles, label = ax.get_legend_handles_labels()
-            ax.legend(handles, ['Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays', 'Sundays'])
 
     #fig.suptitle('Hourly concentrations of Sulphur dioxide sorted by year', y=0.99)
     fig.tight_layout()
@@ -77,14 +82,56 @@ def plot2(df):
     axs = axs.flatten()
     values = ['PM10 particulate matter (Hourly measured)', 'PM2.5 particulate matter (Hourly measured)',
               'Ozone', 'Nitrogen oxides as nitrogen dioxide']
-    names = ['PM10', 'PM2.5', 'Ozone', 'NOx']
+    names = [r'PM$_{10}$', r'PM$_{2.5}$', 'Ozone', r'NO$_x$']
     for i, ax in enumerate(axs):
+        start, stop, end = 2008, 2019, 2023
         df_temp = df
-        sns.boxplot(data=df_temp, x='Year', y=values[i], ax=ax, showfliers=False, color='#52acc8')
+        q = sns.lineplot(data=df_temp, x='Year', y=values[i], ax=ax, color='#52acc8', errorbar='sd')
+        bottom, top = ax.get_ylim()
+        bottom = 0 if bottom <= 0 else bottom
+        ax.fill_between((start, stop), (bottom, bottom), (top, top), alpha=0.1, color='grey', zorder=1.99)
+        ax.fill_between((stop, end), (bottom, bottom), (top, top), alpha=0.2, color='grey', zorder=1.99)
+        ax.set_ylim(bottom, top)
+
+        ydata = q.get_lines()[-1].get_ydata()
+        xdata = q.get_lines()[-1].get_xdata()
+        ydata1 = ydata[:list(xdata).index(start) + 1]
+        ydata2 = ydata[list(xdata).index(start):list(xdata).index(stop)+1]
+        ydata3 = ydata[list(xdata).index(stop):]
+        xdata1 = xdata[:list(xdata).index(start) + 1]
+        xdata2 = xdata[list(xdata).index(start):list(xdata).index(stop)+1]
+        xdata3 = xdata[list(xdata).index(stop):]
+        a1, b1 = np.polyfit(xdata1, ydata1, 1)
+        a2, b2 = np.polyfit(xdata2, ydata2, 1)
+        a3, b3 = np.polyfit(xdata3, ydata3, 1)
+        ax.plot(xdata1, a1 * xdata1 + b1, label='Pre LEZ', ls='-.')
+        ax.plot(xdata2, a2 * xdata2 + b2, label='LEZ', ls='-.')
+        ax.plot(xdata3, a3 * xdata3 + b3, label='ULEZ', ls='-.')
+        ax.text(1998.5, bottom + (top - bottom) / 20, f'm = {a1.round(2)}', fontsize=8)
+        ax.text(2012, bottom + (top - bottom) / 20, f'm = {a2.round(2)}', fontsize=8)
+        ax.text(2019.3, bottom + (top - bottom) / 20, f'm = {a3.round(2)}', fontsize=8)
+        ax.set_xlim(1992, 2023)
+
+        if i == 1:
+            first, last = ydata[list(xdata).index(start)], ydata[list(xdata).index(start+5)]
+            ydata2[1] = first + (last - first) / 5
+            ydata2[2] = first + 2 * (last - first) / 5
+            ydata2[3] = first + 3 * (last - first) / 5
+            ydata2[4] = first + 4 * (last - first) / 5
+            a2, b2 = np.polyfit(xdata2, ydata2, 1)
+            ax.plot(xdata2, a2 * xdata2 + b2, color='C1', ls=':')
+            ax.text(2012, bottom + (top - bottom) / 40, f'm = {a2.round(2)}', fontsize=8, color='grey')
+            ax.set_xlim(1998, 2023)
+
+        if i == 3:
+            ax.legend(loc='upper right')
+
         ax.set_ylabel(fr'{names[i]} Concentration ($\mu$g/m$^3$)')
         ax.locator_params(axis='x', nbins=17)
         ax.tick_params(axis='x', rotation=45)
         ax.xaxis.set_tick_params(labelbottom=True)
+
+
     fig.tight_layout(pad=2)
     #fig.suptitle('Box plots of the concentrations of atmospheric pollutants by year', y=0.99)
     plt.savefig('Figure 2.png', dpi=300)
@@ -134,7 +181,7 @@ def main():
     main_df = add_extra_info(get_data())
 
     plot1(main_df)
-    plot2(main_df)
+    #plot2(main_df)
 
     plt.show()
 
