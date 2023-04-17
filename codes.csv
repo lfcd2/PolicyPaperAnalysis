@@ -1,14 +1,25 @@
 rownames,site_id,site_name,location_type,latitude,longitude,parameter,Parameter_name,start_date,end_date,ratified_to,zone,agglomeration,local_authority
 527,CA1,Camden Kerbside,Urban Traffic,51.54421,-0.175269,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-05-16,ongoing,2022-12-31,Greater London,Greater London Urban Area,Camden
+531,CA1,Camden Kerbside,Urban Traffic,51.54421,-0.175269,PM2.5,PM2.5 particulate matter (Hourly measured),2009-02-19,ongoing,2022-12-31,Greater London,Greater London Urban Area,Camden
 1113,HG1,Haringey Roadside,Urban Traffic,51.5993,-0.068218,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-05-16,ongoing,2022-12-31,Greater London,Greater London Urban Area,Haringey
 1464,BEX,London Bexley,Suburban Background,51.46603,0.184806,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1994-05-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Bexley
+1468,BEX,London Bexley,Suburban Background,51.46603,0.184806,PM2.5,PM2.5 particulate matter (Hourly measured),2008-02-25,ongoing,2022-12-31,Greater London,Greater London Urban Area,Bexley
 1477,CLL2,London Bloomsbury,Urban Background,51.52229,-0.125889,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1992-01-23,ongoing,2022-12-31,Greater London,Greater London Urban Area,Camden
+1483,CLL2,London Bloomsbury,Urban Background,51.52229,-0.125889,PM2.5,PM2.5 particulate matter (Hourly measured),1998-03-26,ongoing,2022-12-31,Greater London,Greater London Urban Area,Camden
 1528,LON6,London Eltham,Suburban Background,51.45258,0.070766,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-04-01,ongoing,2022-09-30,Greater London,Greater London Urban Area,Greenwich
+1531,LON6,London Eltham,Suburban Background,51.45258,0.070766,PM2.5,PM2.5 particulate matter (Hourly measured),2008-05-15,ongoing,2022-12-31,Greater London,Greater London Urban Area,Greenwich
 1584,HG4,London Haringey Priory Park South,Urban Background,51.584128,-0.125254,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2012-10-26,ongoing,2022-12-31,Greater London,Greater London Urban Area,Haringey
 1591,HRL,London Harlington,Urban Industrial,51.48879,-0.441614,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2004-01-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Hillingdon
+1596,HRL,London Harlington,Urban Industrial,51.48879,-0.441614,PM2.5,PM2.5 particulate matter (Hourly measured),2008-09-16,ongoing,2022-12-31,Greater London,Greater London Urban Area,Hillingdon
 1617,HIL,London Hillingdon,Urban Background,51.49633,-0.460861,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-08-02,ongoing,2022-12-31,Greater London,Greater London Urban Area,Hillingdon
+1621,HIL,London Hillingdon,Urban Background,51.49633,-0.460861,PM2.5,PM2.5 particulate matter (Hourly measured),2022-05-05,ongoing,2022-12-31,Greater London,Greater London Urban Area,Hillingdon
+1626,HP1,London Honor Oak Park,Urban Background,51.449674,-0.037418,PM2.5,PM2.5 particulate matter (Hourly measured),2019-01-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Lewisham
 1642,MY1,London Marylebone Road,Urban Traffic,51.52253,-0.154611,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1997-07-17,ongoing,2022-12-31,Greater London,Greater London Urban Area,Westminster
+1648,MY1,London Marylebone Road,Urban Traffic,51.52253,-0.154611,PM2.5,PM2.5 particulate matter (Hourly measured),1998-04-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Westminster
 1690,KC1,London N. Kensington,Urban Background,51.52105,-0.213492,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-04-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Kensington and Chelsea
+1696,KC1,London N. Kensington,Urban Background,51.52105,-0.213492,PM2.5,PM2.5 particulate matter (Hourly measured),2008-12-17,ongoing,2022-12-31,Greater London,Greater London Urban Area,Kensington and Chelsea
+1726,TED2,London Teddington Bushy Park,Urban Background,51.425286,-0.345606,PM2.5,PM2.5 particulate matter (Hourly measured),2013-08-09,ongoing,2022-12-31,Greater London,Greater London Urban Area,Richmond
 1763,HORS,London Westminster,Urban Background,51.49467,-0.131931,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2001-07-17,ongoing,2022-12-31,Greater London,Greater London Urban Area,Westminster
+1766,HORS,London Westminster,Urban Background,51.49467,-0.131931,PM2.5,PM2.5 particulate matter (Hourly measured),2018-04-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Westminster
 2393,SK5,Southwark A2 Old Kent Road,Urban Traffic,51.480499,-0.05955,NOXasNO2,Nitrogen oxides as nitrogen dioxide,2011-01-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Southwark
 2602,TH2,Tower Hamlets Roadside,Urban Traffic,51.52253,-0.042155,NOXasNO2,Nitrogen oxides as nitrogen dioxide,1996-04-01,ongoing,2022-12-31,Greater London,Greater London Urban Area,Tower Hamlets

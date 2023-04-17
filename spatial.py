@@ -17,13 +17,14 @@ class Location:
 
 
 class Station:
-    def __init__(self, name, loc, site_id, lat, long, stat_type, df=""):
+    def __init__(self, name, loc, site_id, lat, long, stat_type, pollutant, df=""):
         self.name = name
         self.Location = loc
         self.Location.add_station(self)
         self.ID = site_id
         self.pos = (lat, long)
         self.stat_type = stat_type
+        self.parameter = pollutant
         self.df = df
         self.lat = lat
         self.long = long
@@ -33,7 +34,9 @@ def get_london_nox():
     df = pyreadr.read_r('AURN_metadata.RData')['AURN_metadata']
     df.drop(df['Greater London' != df['zone']].index, inplace=True)
     parameter = 'NOXasNO2'
-    df.drop(df[parameter != df['parameter']].index, inplace=True)
+    parameters = ['NOXasNO2', 'PM2.5']
+    df = df.loc[df['parameter'].isin(parameters)]
+    #df.drop(df[parameter != df['parameter']].index, inplace=True)
     df.drop(df['ongoing' != df['end_date']].index, inplace=True)
     df.to_csv('codes.csv')
     return df
@@ -43,17 +46,17 @@ def setup_stations():
     df = get_london_nox()
     London = Location()
     for index, row in df.iterrows():
-        Station(row['site_name'], London, row['site_id'], row['latitude'], row['longitude'], row['location_type'])
+        Station(row['site_name'], London, row['site_id'], row['latitude'], row['longitude'], row['location_type'], row['parameter'],)
     return London
 
 
 def plot_map(latlongprojection=ccrs.Mercator()):
 
-    extent = [-0.25, 0, 51.45, 51.59]
+    extent = [-0.25, 0, 51.47, 51.59]
     request = cimgt.GoogleTiles(style='satellite')
-    fig, axs = plt.subplots(ncols=2, figsize=(18, 8), subplot_kw={'projection': request.crs})
-
-    for ax in axs:
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(18, 8), subplot_kw={'projection': request.crs})
+    axs = axs.flatten()
+    for i, ax in enumerate(axs):
         request = cimgt.GoogleTiles(style='satellite')
         gl = ax.gridlines(draw_labels=True, alpha=0.5)
         gl.xlabels_top = gl.ylabels_right = False
@@ -74,7 +77,7 @@ def run_main():
     London = setup_stations()
     year = 2020
     year2 = 2019
-    plot_x, plot_y, plot_1_s, plot_2_s, plot_c, plot_ec, plot_lw = [], [], [], [], [], [], []
+    plot_x, plot_y, plot_1_s, plot_2_s, plot_3_s, plot_4_s, plot_c, plot_ec, plot_lw = [], [], [], [], [], [], [], [], []
     for station in London.stations:
         try:
             df_2020 = pd.read_csv(f'{year}/{station.ID}.csv')
@@ -106,10 +109,17 @@ def run_main():
                 wk_2019.append(f'{i+1}-04-2019')
                 wk_2020.append(f'{i+1}-04-2020')
 
-        val1 = df_2019.loc[df_2019['Date'].isin(wk_2019)]['Nitrogen oxides as nitrogen dioxide'].mean()
-        YearlyDecrease = 5.
-        val2 = df_2020.loc[df_2020['Date'].isin(wk_2020)]['Nitrogen oxides as nitrogen dioxide'].mean()#+YearlyDecrease
+        try:
+            val1 = df_2019['Nitrogen oxides as nitrogen dioxide'].median()
+            val2 = df_2020['Nitrogen oxides as nitrogen dioxide'].median() # .loc[df_2020['Date'].isin(wk_2020)]
+        except KeyError:
+            val1, val2 = 0, 0
         print(station.ID, val1, val2, station.stat_type)
+        try:
+            val3 = df_2019['PM<sub>2.5</sub> particulate matter (Hourly measured)'].median()
+            val4 = df_2020['PM<sub>2.5</sub> particulate matter (Hourly measured)'].median()
+        except KeyError:
+            val3, val4 = 0, 0
 
         if station.ID == 'HORS':
             val2 = val1
@@ -123,17 +133,27 @@ def run_main():
         plot_y.append(station.lat)
         plot_1_s.append(val1*scalar)
         plot_2_s.append(val2*scalar)
+        plot_3_s.append(val3 * scalar)
+        plot_4_s.append(val4 * scalar)
         plot_c.append(c)
         plot_ec.append(ec)
         plot_lw.append(linew)
 
     # PLOT #
+    print(plot_1_s, plot_2_s, plot_3_s, plot_4_s)
     s0 = axs[0].scatter(plot_x, plot_y, s=plot_1_s, transform=ccrs.PlateCarree(),
                         color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
-    axs[0].set_title('2019')
+    axs[0].set_title(r'April 2019 NO$_x$')
     s1 = axs[1].scatter(plot_x, plot_y, s=plot_2_s, transform=ccrs.PlateCarree(),
                         color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
-    axs[1].set_title('2020')
+    axs[1].set_title(r'April 2020 NO$_x$')
+    s2 = axs[2].scatter(plot_x, plot_y, s=plot_3_s, transform=ccrs.PlateCarree(),
+                        color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
+    axs[2].set_title(r'April 2019 PM$_{2.5}$')
+    s3 = axs[3].scatter(plot_x, plot_y, s=plot_4_s, transform=ccrs.PlateCarree(),
+                        color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
+    axs[3].set_title(r'April 2020 PM$_{2.5}$')
+
 
     # LEGEND 1 #
     proxy_plot0 = axs[1].scatter([50, 50], [10, 10], s=[10*scalar, 500*scalar], transform=ccrs.PlateCarree())
@@ -154,13 +174,13 @@ def run_main():
     a = "\n"
     labels = ticks2
     leg2 = plt.legend(handles, labels, loc="upper left",
-                      title=fr'Mean April NO$_x${a}concentration{a}($\mu$g m$^-$$^3$)',
+                      title=fr'Mean concentration{a}($\mu$g m$^-$$^3$)',
                       scatterpoints=2, bbox_to_anchor=(1, 0.9), labelspacing=1.6, frameon=False)
     plt.setp(leg2.get_title(), multialignment='center')
 
     # DISPLAY #
-    fig.tight_layout(rect=(0, 0, 0.97, 1))
-    #plt.savefig(f'{year}plot.png', dpi=600)
+    fig.tight_layout(rect=(0.04, 0, 0.96, 1))
+    #plt.savefig(f'{year}plot4(both).png', dpi=600)
     plt.show()
 
 
