@@ -179,7 +179,7 @@ def run_main():
     plt.setp(leg2.get_title(), multialignment='center')
 
     # DISPLAY #
-    fig.tight_layout(rect=(0.04, 0, 0.96, 1))
+    fig.tight_layout(rect=(0.1, 0, 0.9, 1))
     #plt.savefig(f'{year}plot4(both).png', dpi=600)
     plt.show()
 
