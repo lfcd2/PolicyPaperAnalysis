@@ -54,7 +54,7 @@ def plot_map(latlongprojection=ccrs.Mercator()):
 
     extent = [-0.25, 0, 51.47, 51.59]
     request = cimgt.GoogleTiles(style='satellite')
-    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(18, 8), subplot_kw={'projection': request.crs})
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(24, 5), subplot_kw={'projection': request.crs})
     axs = axs.flatten()
     for i, ax in enumerate(axs):
         request = cimgt.GoogleTiles(style='satellite')
@@ -163,7 +163,7 @@ def run_main():
     proxy_plot3 = axs[1].scatter([50], [10], s=[100*scalar], transform=ccrs.PlateCarree(), color='lime')
     leg = axs[1].legend([proxy_plot1, proxy_plot2, proxy_plot3],
                         ['Background\nMeasurement', 'Traffic\nMeasurement', 'London\nBloomsbury'],
-                        loc='lower left', bbox_to_anchor=(1, 0.1), labelspacing=1.5, frameon=False)
+                        loc='lower left', bbox_to_anchor=(1, 0.01), labelspacing=1.5, frameon=False)
     axs[1].add_artist(leg)
     ticks = [10*scalar, 20*scalar, 50*scalar, 100*scalar]
     ticks2 = [10, 20, 50, 100]
@@ -175,12 +175,12 @@ def run_main():
     labels = ticks2
     leg2 = plt.legend(handles, labels, loc="upper left",
                       title=fr'Mean concentration{a}($\mu$g m$^-$$^3$)',
-                      scatterpoints=2, bbox_to_anchor=(1, 0.9), labelspacing=1.6, frameon=False)
+                      scatterpoints=2, bbox_to_anchor=(1, 0.99), labelspacing=1.6, frameon=False)
     plt.setp(leg2.get_title(), multialignment='center')
 
     # DISPLAY #
-    fig.tight_layout(rect=(0.1, 0, 0.9, 1))
-    #plt.savefig(f'{year}plot4(both).png', dpi=600)
+    fig.tight_layout()#rect=(0.15, 0, 0.85, 1))
+    plt.savefig(f'{year}plot4(both).png', dpi=600)
     plt.show()
 
 
