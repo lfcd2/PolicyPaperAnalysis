@@ -68,6 +68,7 @@ def plot1(df):
         ax.set_ylabel(fr'Nitrogen Oxides Concentration ($\mu$g/m$^3$)')
         ax.text(2, 95, f'{i + 2018}')
         ax.set_xlim(1, 23)
+        ax.plot((0, 24), (40, 40), label='WHO Limit', color='C3', alpha=0.3, ls='dashed')
         ax.legend()
         if i != 4:
             ax.get_legend().remove()
@@ -83,6 +84,7 @@ def plot2(df):
     values = ['PM10 particulate matter (Hourly measured)', 'PM2.5 particulate matter (Hourly measured)',
               'Ozone', 'Nitrogen oxides as nitrogen dioxide']
     names = [r'PM$_{10}$', r'PM$_{2.5}$', 'Ozone', r'NO$_x$']
+    limits = [20, 5, 100, 40]
     for i, ax in enumerate(axs):
         start, stop, end = 2008, 2019, 2023
         df_temp = df
@@ -110,7 +112,7 @@ def plot2(df):
         ax.text(1998.5, bottom + (top - bottom) / 40, f'{a1.round(2)}', fontsize=8, color='C0')
         ax.text(2020, bottom + (top - bottom) / 40, f'{a3.round(2)}', fontsize=8, color='C2')
         ax.set_xlim(1992, 2023)
-
+        ax.plot((0, 2024), (limits[i], limits[i]), label='WHO Limit', color='C3', alpha=0.3, ls='dashed')
         if i == 1:
             ax.text(2010, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8, color='C1')
             first, last = ydata[list(xdata).index(start)], ydata[list(xdata).index(start+5)]
@@ -182,8 +184,8 @@ def plot4(df):
 def main():
     main_df = add_extra_info(get_data())
 
-    #plot1(main_df)
-    plot2(main_df)
+    plot1(main_df)
+    #plot2(main_df)
 
     plt.show()
 
