@@ -70,7 +70,7 @@ def plot1(df):
         ax.set_xlim(1, 23)
         ax.plot((0, 24), (40, 40), label='WHO Limit', color='C3', alpha=0.3, ls='dashed')
         ax.legend()
-        if i != 4:
+        if i != 1:
             ax.get_legend().remove()
 
     #fig.suptitle('Hourly concentrations of Sulphur dioxide sorted by year', y=0.99)
@@ -91,8 +91,8 @@ def plot2(df):
         q = sns.lineplot(data=df_temp, x='Year', y=values[i], ax=ax, color='#52acc8', errorbar='sd')
         bottom, top = ax.get_ylim()
         bottom = 0 if bottom <= 0 else bottom
-        ax.fill_between((start, stop), (bottom, bottom), (top, top), alpha=0.1, color='grey', zorder=1.99)
-        ax.fill_between((stop, end), (bottom, bottom), (top, top), alpha=0.2, color='grey', zorder=1.99)
+        ax.fill_between((start, stop), (bottom, bottom), (top, top), alpha=0.15, color='grey', zorder=1.99, lw=0)
+        ax.fill_between((stop, end), (bottom, bottom), (top, top), alpha=0.3, color='grey', zorder=1.99, lw=0)
         ax.set_ylim(bottom, top)
 
         ydata = q.get_lines()[-1].get_ydata()
@@ -106,29 +106,29 @@ def plot2(df):
         a1, b1 = np.polyfit(xdata1, ydata1, 1)
         a2, b2 = np.polyfit(xdata2, ydata2, 1)
         a3, b3 = np.polyfit(xdata3, ydata3, 1)
-        ax.plot(xdata1, a1 * xdata1 + b1, label='Pre LEZ', ls='-.')
-        ax.plot(xdata2, a2 * xdata2 + b2, label='LEZ', ls='-.')
-        ax.plot(xdata3, a3 * xdata3 + b3, label='ULEZ', ls='-.')
-        ax.text(1998.5, bottom + (top - bottom) / 40, f'{a1.round(2)}', fontsize=8, color='C0')
-        ax.text(2019.3, bottom + (top - bottom) / 40, f'{a3.round(2)}', fontsize=8, color='C2')
+        #ax.plot(xdata1, a1 * xdata1 + b1, label='Pre LEZ', ls='-.')
+        #ax.plot(xdata2, a2 * xdata2 + b2, label='LEZ', ls='-.')
+        #ax.plot(xdata3, a3 * xdata3 + b3, label='ULEZ', ls='-.')
+        ax.text(1998.5, bottom + (top - bottom) / 40, f'{a1.round(2)}', fontsize=8)
+        ax.text(2019.3, bottom + (top - bottom) / 40, f'{a3.round(2)}', fontsize=8)
         ax.set_xlim(1992, 2023)
         ax.plot((0, 2024), (limits[i], limits[i]), label='WHO Limit', color='C3', alpha=0.3, ls='dashed')
         if i == 1:
-            ax.text(2009, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8, color='C1')
+            ax.text(2009, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8)
             first, last = ydata[list(xdata).index(start)], ydata[list(xdata).index(start+5)]
             ydata2[1] = first + (last - first) / 5
             ydata2[2] = first + 2 * (last - first) / 5
             ydata2[3] = first + 3 * (last - first) / 5
             ydata2[4] = first + 4 * (last - first) / 5
             a2, b2 = np.polyfit(xdata2, ydata2, 1)
-            ax.plot(xdata2, a2 * xdata2 + b2, color='grey', ls=':')
-            ax.text(2013, bottom + (top - bottom) / 40, f'/ {a2.round(2)}', fontsize=8, color='grey')
+            # ax.plot(xdata2, a2 * xdata2 + b2, color='grey', ls=':')
+            ax.text(2013, bottom + (top - bottom) / 40, f'/ {a2.round(2)}', fontsize=8)
             ax.set_xlim(1998, 2023)
         else:
-            ax.text(2012.5, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8, color='C1')
+            ax.text(2012.5, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8)
 
-        if i == 3:
-            ax.legend(loc='upper right', fontsize=8)
+        if i == 1:
+            ax.legend(loc='upper left', fontsize=8)
 
         ax.set_ylabel(fr'{names[i]} Concentration ($\mu$g/m$^3$)')
         if i > 1:
