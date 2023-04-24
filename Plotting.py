@@ -57,7 +57,7 @@ def days_after_first_monday(df):
 
 
 def plot1(df):
-    fig, axs = plt.subplots(nrows=1, ncols=5, figsize=(15, 3), sharex='all', sharey='all')
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(7, 7), sharex='all', sharey='all')
     axs = axs.flatten()
     for i, ax in enumerate(axs):
         df2 = df[df['Year'] == i + 2018]
@@ -79,7 +79,7 @@ def plot1(df):
 
 
 def plot2(df):
-    fig, axs = plt.subplots(nrows=1, ncols=4, figsize=(18, 4), sharex='all')
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(7, 6), sharex='all')
     axs = axs.flatten()
     values = ['PM10 particulate matter (Hourly measured)', 'PM2.5 particulate matter (Hourly measured)',
               'Ozone', 'Nitrogen oxides as nitrogen dioxide']
@@ -110,11 +110,11 @@ def plot2(df):
         ax.plot(xdata2, a2 * xdata2 + b2, label='LEZ', ls='-.')
         ax.plot(xdata3, a3 * xdata3 + b3, label='ULEZ', ls='-.')
         ax.text(1998.5, bottom + (top - bottom) / 40, f'{a1.round(2)}', fontsize=8, color='C0')
-        ax.text(2020, bottom + (top - bottom) / 40, f'{a3.round(2)}', fontsize=8, color='C2')
+        ax.text(2019.3, bottom + (top - bottom) / 40, f'{a3.round(2)}', fontsize=8, color='C2')
         ax.set_xlim(1992, 2023)
         ax.plot((0, 2024), (limits[i], limits[i]), label='WHO Limit', color='C3', alpha=0.3, ls='dashed')
         if i == 1:
-            ax.text(2010, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8, color='C1')
+            ax.text(2009, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8, color='C1')
             first, last = ydata[list(xdata).index(start)], ydata[list(xdata).index(start+5)]
             ydata2[1] = first + (last - first) / 5
             ydata2[2] = first + 2 * (last - first) / 5
@@ -128,12 +128,14 @@ def plot2(df):
             ax.text(2012.5, bottom + (top - bottom) / 40, f'{a2.round(2)}', fontsize=8, color='C1')
 
         if i == 3:
-            ax.legend(loc='upper right')
+            ax.legend(loc='upper right', fontsize=8)
 
         ax.set_ylabel(fr'{names[i]} Concentration ($\mu$g/m$^3$)')
-        ax.locator_params(axis='x', nbins=9)
-        ax.tick_params(axis='x', rotation=45)
-        ax.xaxis.set_tick_params(labelbottom=True)
+        if i > 1:
+            ax.locator_params(axis='x', nbins=9)
+
+            ax.tick_params(axis='x', rotation=45)
+            ax.xaxis.set_tick_params(labelbottom=True)
 
 
     fig.tight_layout()#pad=2)
@@ -184,8 +186,8 @@ def plot4(df):
 def main():
     main_df = add_extra_info(get_data())
 
-    plot1(main_df)
-    #plot2(main_df)
+    #plot1(main_df)
+    plot2(main_df)
 
     plt.show()
 

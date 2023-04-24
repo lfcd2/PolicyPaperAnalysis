@@ -52,26 +52,29 @@ def setup_stations():
 
 def plot_map(latlongprojection=ccrs.Mercator()):
 
-    extent = [-0.25, 0, 51.47, 51.59]
+    extent = [-0.22, -0.12, 51.49, 51.55]
     request = cimgt.GoogleTiles(style='satellite')
-    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(24, 5), subplot_kw={'projection': request.crs})
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(20, 8), subplot_kw={'projection': request.crs})
     axs = axs.flatten()
     for i, ax in enumerate(axs):
-        request = cimgt.GoogleTiles(style='satellite')
+
         gl = ax.gridlines(draw_labels=True, alpha=0.5)
         gl.xlabels_top = gl.ylabels_right = False
         gl.xformatter = LONGITUDE_FORMATTER
         gl.yformatter = LATITUDE_FORMATTER
         ax.set_extent(extent)
-        ax.add_image(request, 13, interpolation='spline36')
 
-        request = cimgt.Stamen(style='toner-lines')
-        ax.add_image(request, 14, alpha=0.1, interpolation='spline36')
+        request = cimgt.Stamen(style='terrain')
+        ax.add_image(request, 14, interpolation='spline36')
+
+        #request = cimgt.GoogleTiles(style='satellite')
+        #ax.add_image(request, 13, alpha=0.2, interpolation='spline36')
+
     return fig, axs
 
 
 def run_main():
-    scalar = 8
+    scalar = 10
     latlongprojection = ccrs.Mercator()
     fig, axs = plot_map(latlongprojection)
     London = setup_stations()
@@ -125,9 +128,9 @@ def run_main():
             val2 = val1
 
         c = 'lime' if station.ID == 'CLL2' else 'red'
+        if station.stat_type == "Urban Traffic":
+            c = 'blue'
         ec = 'blue' if station.stat_type == 'Urban Traffic' else c
-        lw = 2
-        linew = lw if station.stat_type == 'Urban Traffic' else 1.5
 
         plot_x.append(station.long)
         plot_y.append(station.lat)
@@ -137,33 +140,32 @@ def run_main():
         plot_4_s.append(val4 * scalar)
         plot_c.append(c)
         plot_ec.append(ec)
-        plot_lw.append(linew)
 
     # PLOT #
     print(plot_1_s, plot_2_s, plot_3_s, plot_4_s)
     s0 = axs[0].scatter(plot_x, plot_y, s=plot_1_s, transform=ccrs.PlateCarree(),
-                        color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
+                        color=plot_c, alpha=0.3, edgecolors=plot_ec)
     axs[0].set_title(r'April 2019 NO$_x$')
     s1 = axs[1].scatter(plot_x, plot_y, s=plot_2_s, transform=ccrs.PlateCarree(),
-                        color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
+                        color=plot_c, alpha=0.3, edgecolors=plot_ec)
     axs[1].set_title(r'April 2020 NO$_x$')
     s2 = axs[2].scatter(plot_x, plot_y, s=plot_3_s, transform=ccrs.PlateCarree(),
-                        color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
+                        color=plot_c, alpha=0.3, edgecolors=plot_ec)
     axs[2].set_title(r'April 2019 PM$_{2.5}$')
     s3 = axs[3].scatter(plot_x, plot_y, s=plot_4_s, transform=ccrs.PlateCarree(),
-                        color=plot_c, alpha=0.6, edgecolors=plot_ec, linewidth=plot_lw)
+                        color=plot_c, alpha=0.3, edgecolors=plot_ec)
     axs[3].set_title(r'April 2020 PM$_{2.5}$')
 
 
     # LEGEND 1 #
     proxy_plot0 = axs[1].scatter([50, 50], [10, 10], s=[10*scalar, 500*scalar], transform=ccrs.PlateCarree())
     proxy_plot1 = axs[1].scatter([50], [10], s=[100*scalar], transform=ccrs.PlateCarree(), color='red')
-    proxy_plot2 = axs[1].scatter([50], [10], s=[100*scalar], transform=ccrs.PlateCarree(), color='red',
-                                 edgecolor='blue', linewidth=lw)
+    proxy_plot2 = axs[1].scatter([50], [10], s=[100*scalar], transform=ccrs.PlateCarree(), color='blue',
+                                 edgecolor='blue')
     proxy_plot3 = axs[1].scatter([50], [10], s=[100*scalar], transform=ccrs.PlateCarree(), color='lime')
     leg = axs[1].legend([proxy_plot1, proxy_plot2, proxy_plot3],
                         ['Background\nMeasurement', 'Traffic\nMeasurement', 'London\nBloomsbury'],
-                        loc='lower left', bbox_to_anchor=(1, 0.01), labelspacing=1.5, frameon=False)
+                        loc='lower left', bbox_to_anchor=(1.05, 0.01), labelspacing=1.5, frameon=False)
     axs[1].add_artist(leg)
     ticks = [10*scalar, 20*scalar, 50*scalar, 100*scalar]
     ticks2 = [10, 20, 50, 100]
@@ -175,12 +177,12 @@ def run_main():
     labels = ticks2
     leg2 = plt.legend(handles, labels, loc="upper left",
                       title=fr'Mean concentration{a}($\mu$g m$^-$$^3$)',
-                      scatterpoints=2, bbox_to_anchor=(1, 0.99), labelspacing=1.6, frameon=False)
+                      scatterpoints=2, bbox_to_anchor=(1.05, 0.99), labelspacing=1.9, frameon=False)
     plt.setp(leg2.get_title(), multialignment='center')
 
     # DISPLAY #
-    fig.tight_layout()#rect=(0.15, 0, 0.85, 1))
-    plt.savefig(f'{year}plot4(both).png', dpi=600)
+    fig.tight_layout(rect=(0.18, 0, 0.82, 1))
+    plt.savefig(f'{year}plot4(both).png', dpi=1200)
     plt.show()
 
 
